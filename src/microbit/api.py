@@ -1,11 +1,16 @@
-# api.py  01.06.2017  D.J.Whale
+# api.py  01/06/2017  D.J.Whale
 #
 # an API to a remote micro:bit
 #
 # TODO: for all pins: digital_write, digital_read
 # TODO: for analog pins: analog_write, analog_read
-# TODO: named Images
 # TODO: lots of other API methods that need implementing.
+
+import time
+
+# NOTE: we have defined MicroBit as a class, so that it is possible later to
+# have more than one micro:bit connected, perhaps with independent state
+# such as the state of the REPL.
 
 class MicroBit():
     def __init__(self, repl):
@@ -74,7 +79,26 @@ class MicroBit():
             r = (int(r[0]), int(r[1]), int(r[2]))
             return r
 
+    class StandardImage():
+        def __init__(self, name):
+            self.name = name
+
     class Image():
+        STD_IMAGE_NAMES = [
+            "HEART", "HEART_SMALL", "HAPPY", "SMILE", "SAD", "CONFUSED", "ANGRY", "ASLEEP", "SURPRISED",
+            "SILLY", "FABULOUS", "MEH", "YES", "NO", "TRIANGLE", "TRIANGLE_LEFT", "CHESSBOARD",
+            "DIAMOND", "DIAMOND_SMALL", "SQUARE", "SQUARE_SMALL", "RABBIT", "COW",
+            "MUSIC_CROTCHET", "MUSIC_QUAVER", "MUSIC_QUAVERS", "PITCHFORK", "XMAS", "PACMAN",
+            "TARGET", "TSHIRT", "ROLLERSKATE", "DUCK", "HOUSE", "TORTOISE", "BUTTERFLY", "STICKFIGURE",
+            "GHOST", "SWORD", "GIRAFFE", "SKULL", "UMBRELLA", "SNAKE",
+            "CLOCK12","CLOCK11","CLOCK10","CLOCK9","CLOCK8","CLOCK7","CLOCK6","CLOCK5",
+            "CLOCK4","CLOCK3","CLOCK2","CLOCK1",
+            "ARROW_N", "ARROW_NE","ARROW_E","ARROW_SE","ARROW_S","ARROW_SW","ARROW_W","ARROW_NW"
+        ]
+        STD_IMAGES = []
+        ##ALL_CLOCKS = []
+        ##ALL_ARROWS = []
+
         def __init__(self, bitmap_str):
             self.bitmap_str = bitmap_str
 
@@ -85,12 +109,22 @@ class MicroBit():
         def __init__(self, name):
             self.name = name
 
+        def scroll(self, s):
+            if not isinstance(s, str):
+                raise RuntimeError("display.scroll needs a str")
+            self.parent.cmd("%s.scroll(\"%s\")" % (self.name, s))
+
         def show(self, v):
-            if isinstance(v, MicroBit.Image):
+            if isinstance(v, MicroBit.StandardImage):
+                self.parent.cmd("%s.show(Image.%s)" % (self.name, v.name))
+
+            elif isinstance(v, MicroBit.Image):
                 s = v.__str__() # get bitmap
                 self.parent.cmd("%s.show(Image(\"%s\"))" % (self.name, s))
+
             elif isinstance(v, str):
                 self.parent.cmd("%s.show(\"%s\")" % (self.name, v))
+
             elif isinstance(v, int):
                 if v >= 0 and v <= 99:
                     import font2x5
@@ -99,9 +133,16 @@ class MicroBit():
                 else:
                     v = str(v)
                     self.parent.cmd("%s.show(\"%s\")" % (self.name, v))
+            elif isinstance(v, list):
+                #TODO: This is really an iterable.
+                #but it is most likely a list of images such as ALL_CLOCKS
+                raise RuntimeError("List parameters not yet implemented for Display.show()")
 
         def clear(self):
             self.parent.cmd("%s.clear()" % self.name)
+
+    def sleep(self, ms):
+        time.sleep(float(ms)/1000)
 
     button_a      = Button('button_a')
     button_b      = Button('button_b')
@@ -110,6 +151,11 @@ class MicroBit():
     pin0          = TouchPin("pin0")
     pin1          = TouchPin("pin1")
     pin2          = TouchPin("pin2")
+
+    for image_name in Image.STD_IMAGE_NAMES:
+        i = StandardImage(image_name)
+        setattr(Image, image_name, i)
+        Image.STD_IMAGES.append(i)
 
 
 # END

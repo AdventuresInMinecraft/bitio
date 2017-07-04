@@ -1,6 +1,13 @@
 --------------------------------------------------------------------------------
 TODO
 
+* Perhaps catch the exception if the micro:bit is not there and display a more friendly
+error message with some advice, rather than an exception dump.
+
+
+--------------------------------------------------------------------------------
+TODO
+
 Possible use cases
 
 It might have multiple forms:

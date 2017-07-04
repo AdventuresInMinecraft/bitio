@@ -1,11 +1,13 @@
-# bitio A Micro:bit IO device
+# bitio - A Micro:bit IO device
 
 ## What is this?
 
 bitio (pronounced bitty-o) is a micro:bit I/O library for Python.
 It allows you to run code in Python on a PC/Mac/Linux/Raspberry Pi
 and interact directly with the micro:bit. It works with both Python 2 and
-with Python 3.
+with Python 3 on Mac, PC, Raspberry Pi and Linux.
+
+![bitio logo](bitio.png)
 
 ## Where is the latest version?
 
@@ -23,7 +25,7 @@ go right to the author's website and get the latest code from here:
 
 ## What can I do with it?
 
-This is useful if you want to use the micro:bit as an input or an output
+This package is useful if you want to use the micro:bit as an input or an output
 device for other programs, e.g. for Minecraft. Tilt your micro:bit, and
 something happens in the Minecraft world. It can be used for anything
 though, where you want to use the input and output devices on the micro:bit
@@ -44,19 +46,38 @@ choose DOWNLOAD ZIP
 
 Unzip the zip file
 
-Flash the micropython.hex file onto your micro:bit by dragging and dropping
-it onto the MICROBIT drive that appears when you plug in your micro:bit
+Flash the bitio.hex file onto your micro:bit by dragging and dropping
+it onto the MICROBIT drive that appears when you plug in your micro:bit.
+The bitio logo will appear on the display to show you that it has
+loaded correctly.
+
+If you are on Windows, unfortunately you need to install the mbed serial driver
+first before you can use the serial port on your micro:bit. You don't need to
+do this on Mac/Pi/Linux as they have a compatible driver already built into the OS.
+Note that you need admin access to your PC and the micro:bit must be plugged in
+when you install the driver for it to work (but it says that on the web page
+linked below)
+
+For windows, follow these instructions:
+
+[serial driver setup for Windows](https://support.microbit.org/solution/articles/19000022103-how-do-i-use-the-serial-port-with-a-micro-bit-on-windows)
+
 
 Run (in Python 2 or Python 3, both are supported) the counter.py example 
-like this:
+from the command prompt on Windows (use Terminal on Mac/Linux/Pi),
+or you can even open counter.py inside the IDLE editor and just
+run it from there.
 
 ```
+cd src
 python counter.py
 ```
 
 Follow the on screen instructions which will walk you through unplugging and
 plugging back in the micro:bit, as a way to detect which serial port it is
 connected to on your computer.
+
+![connecting](connect.png)
 
 Finally, you should get a counter counting from 00 to 99 in the WhaleySans font
 (2x5 sized digits) on the display.
@@ -71,6 +92,8 @@ button.py  - sense a button press
 counter.py - count from 00 to 99
 sensing.py - sense buttons and accelerometer values
 touched.py - sense pin touch
+std_image.py - use in-built standard images
+custom_image.py - define your own custom images
 ```
 
 Not all of the features of the micro:bit are made available via this
@@ -161,18 +184,24 @@ micro:bit.
 
 ## What is next?
 
-I have a big todo list (look in the docs folder). One key thing I want to do is to pull all
-my various micro:bit comms projects into this single package, including bringing in the
-microbit-gateway project for linking via the micro:bit radio network, amongst other features.
+I have a big todo list (look in the docs folder). 
 
-I also have a microbit.GPIO idea in the making, where it could be used a bit like RPi.GPIO.
+One key thing I want to do is to pull all my various micro:bit comms projects into this single package, 
+including bringing in the microbit-gateway project for linking via the micro:bit radio network, amongst other features.
+
+I think this work will also add a radio configuration feature with assistance at the
+micro:bit end, so that it is possible to build multi channel frequency hopping gateways.
+That is a bit of a long term plan at the moment though.
+
+I also have a microbit.GPIO idea in the making, where it could be used a bit like RPi.GPIO
+and form part of my anyio package as another supported platform.
 
 
 David Whale
 
 @whaleygeek
 
-9th June 2017
+1st July 2017
 
 
 
