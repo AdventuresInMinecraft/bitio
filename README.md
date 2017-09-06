@@ -16,12 +16,17 @@ childrens coding book 'Adventures in Minecraft'.
 
 You can get the official version of the library that supports the book from here:
 
-[Official version](https://github.com/AdventuresInMinecraft/bitio)
+[Official version - on Adventures in Minecraft site](https://github.com/AdventuresInMinecraft/bitio)
 
 If you want something a bit more leading edge with some experimental new features,
 go right to the author's website and get the latest code from here:
 
-[Development version](https://github.com/whaleygeek/bitio)
+[Development version - on whaleygeek site](https://github.com/whaleygeek/bitio)
+
+It will soon be added to pypi, so very soon you will be able to do:
+```pip install bitio```
+or
+```pip3 install bitio```
 
 ## What can I do with it?
 
@@ -31,14 +36,26 @@ something happens in the Minecraft world. It can be used for anything
 though, where you want to use the input and output devices on the micro:bit
 inside a Python program on a bigger computer.
 
-[Micro:bit](https://microbit.org)
+[About the Micro:bit](https://microbit.org)
 
-[MicroPython](https://python.microbit.org)
+[About MicroPython](https://python.microbit.org)
 
-[Minecraft](https://minecraft.net)
+[About Minecraft](https://minecraft.net)
+
+# Show me some projects!
+
+Mr NCSComputing has written up a lot of projects using bitio and minecraft
+together here: 
+
+[Bitio with Minecraft](http://warksjammy.blogspot.co.uk/2017/07/bitio-blogs-in-one-place.html?view=timeslide)
 
 
-## Getting Started
+# Getting Started
+
+There are a number of ways you could get bitio installed, however this route is
+designed to be mostly 'install free', specifically to make it easy for 
+schools to use the package where there is a mostly locked-down Python
+environment.
 
 Press CLONE OR DOWNLOAD
 
@@ -51,7 +68,14 @@ it onto the MICROBIT drive that appears when you plug in your micro:bit.
 The bitio logo will appear on the display to show you that it has
 loaded correctly.
 
-If you are on Windows, unfortunately you need to install the mbed serial driver
+The best way to use the package in a restricted school environment is to
+then just copy the 'microbit' folder into the students home folder.
+Any Python programs that they write and store in their home folder will
+now automatically find the 'microbit' package when they 'import microbit'
+from any of their Python programs.
+
+
+If you are on Windows, you first need to install the mbed serial driver
 first before you can use the serial port on your micro:bit. You don't need to
 do this on Mac/Pi/Linux as they have a compatible driver already built into the OS.
 Note that you need admin access to your PC and the micro:bit must be plugged in
@@ -60,32 +84,199 @@ linked below)
 
 For windows, follow these instructions:
 
-[serial driver setup for Windows](https://support.microbit.org/solution/articles/19000022103-how-do-i-use-the-serial-port-with-a-micro-bit-on-windows)
+[How to install the Windows mbed serial driver](https://support.microbit.org/solution/articles/19000022103-how-do-i-use-the-serial-port-with-a-micro-bit-on-windows)
 
+## Making a connection
 
-Run (in Python 2 or Python 3, both are supported) the counter.py example 
-from the command prompt on Windows (use Terminal on Mac/Linux/Pi),
-or you can even open counter.py inside the IDLE editor and just
-run it from there.
+Run (in Python 2 or Python 3, both are supported) the counter.py example
+that is in the src folder.
 
-```
-cd src
-python counter.py
-```
+You could run this from the command prompt if you know how. But it is
+also just as easy to open counter.py from within the IDLE editor
+and run it, and it should work fine.
 
 Follow the on screen instructions which will walk you through unplugging and
 plugging back in the micro:bit, as a way to detect which serial port it is
 connected to on your computer.
 
-![connecting](connect.png)
+```
+connecting...
+warning:Could not open the serial port that was remembered from last time
+Scanning for serial ports
+remove micro:bit, then press ENTER
+scanning...
+found 132 micro:bit(s)
+plug in micro:bit, then press ENTER
+scanning...
+found 133 micro:bit(s)
+found 1 new micro:bit
+selected:/dev/tty.usbmodem1422
+Do you want this micro:bit to be remembered? (Y/N)y
+Your micro:bit has been detected
+Now running your program
+```
 
 Finally, you should get a counter counting from 00 to 99 in the WhaleySans font
 (2x5 sized digits) on the display.
 
-## Where are the Docs?
+# Documentation
 
-There are no docs at the moment. But there are a few example programs as below
-that will get you started, until the docs are written.
+There are no official docs yet, but here is a short quick-reference to get you started.
+Note I have added a microbit.sleep(2000) at the end of some examples, because
+once your Python program finishes the bitio icon will be displayed on the
+micro:bit again and this will overwrite whatever is on the micro:bit screen.
+
+## Connecting to the micro:bit
+
+```
+    NOTE: Make sure bitio.hex is installed
+    import microbit
+```
+
+## Scrolling text on the screen
+
+```
+    import microbit
+    microbit.display.scroll("Hello")
+    microbit.sleep(2000)
+```
+
+## Displaying a single character
+
+```
+    import microbit
+    microbit.display.show("A")
+    microbit.sleep(2000)
+```
+
+## Displaying numbers
+
+```
+    import microbit
+    microbit.display.scroll(2345)
+    microbit.sleep(2000)
+```
+
+## Displaying numbers using a 2-digit font
+
+```
+    import microbit
+    for n in range(99):
+        microbit.display.show(n)
+        microbit.sleep(250)
+```
+
+## Getting a list of pre-defined images
+
+```
+    import microbit
+    print(microbit.Image.STD_IMAGE_NAMES)
+    microbit.sleep(2000)
+```
+
+## Displaying a pre-defined image
+
+```
+    import microbit
+    microbit.display.show(microbit.Image.HAPPY)
+    microbit.sleep(2000)
+```
+
+## Spinning a clock
+
+```
+    import microbit
+    for c in microbit.Image.ALL_CLOCKS:
+        microbit.display.show(c)
+        microbit.sleep(250)
+```
+    
+## Defining a custom image
+
+```
+    import microbit
+    BANANA = microbit.Image("00090:00090:00990:09900:99000")
+    microbit.display.show(BANANA)
+    microbit.sleep(2000)
+```
+
+## Clearing the display
+
+```
+    import microbit
+    microbit.display.clear()
+    microbit.sleep(2000)
+```
+
+## Sensing when a button is pressed
+
+```
+    import microbit
+    while True:
+        if microbit.button_a.was_pressed():
+            microbit.display.show("A")
+            microbit.sleep(500)
+            microbit.display.clear()
+```
+    
+## Sensing when a pin is touched
+
+```
+    import microbit
+    while True:
+        if microbit.pin0.is_touched():
+            microbit.display.show("T")
+            microbit.sleep(500)
+            microbit.display.clear()
+```
+    
+## Reading accelerometer values
+
+```
+    import microbit
+    while True:
+        print(microbit.accelerometer.get_values())
+        microbit.sleep(250)
+```
+  
+## Sensing tilt in the X plane
+
+```
+    import microbit
+    while True:
+        x = microbit.accelerometer.get_x()
+        x = abs(x)
+        if x > 200:
+            print("Tilted")
+        else:
+            print("Not Tilted")
+        microbit.sleep(500)
+```
+  
+
+# TODO ITEMS
+
+These items are currently not implemented in this release, but will be added soon.
+
+pin[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  digital_read()
+  digital_write()
+  analog_read()
+  analog_write()
+  set_pull()
+
+display
+  get_pixel(x, y)
+  set_pixel(x, y, value)
+  on()
+  off()
+  is_on()
+
+
+
+# Sample programs
+
+Here are a few sample programs you can use to get started
 
 ```
 button.py  - sense a button press
@@ -94,6 +285,10 @@ sensing.py - sense buttons and accelerometer values
 touched.py - sense pin touch
 std_image.py - use in-built standard images
 custom_image.py - define your own custom images
+tilt.py - show how to sense tilt movements
+tilt_mc.py - use the tilt with Minecraft
+clocks.py - show a spinning clock
+arrows.py - show a spinning arrow
 ```
 
 Not all of the features of the micro:bit are made available via this
@@ -101,6 +296,7 @@ API yet, but we're working on it!
 
 ## MicroPython
 
+The bitio code that runs at the micro:bit end is MicroPython.
 The version of MicroPython cached inside this project is from here:
 
 [MicroPython](https://codewith.mu/help/0.9.13/)

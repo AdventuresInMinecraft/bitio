@@ -13,6 +13,7 @@ import importlib
 from serial.serialutil import *
 #~ SerialBase, SerialException, to_bytes, iterbytes
 
+BITIO = True # something to allow bitio to detect we have loaded the correct module
 __version__ = '3.3'
 
 VERSION = __version__
@@ -26,7 +27,12 @@ else:
     if os.name == 'nt':  # sys.platform == 'win32':
         from serial.serialwin32 import Serial
     elif os.name == 'posix':
-        from serial.serialposix import Serial, PosixPollSerial, VTIMESerial  # noqa
+        ##from serial.serialposix import Serial, PosixPollSerial, VTIMESerial  # noqa
+        ##PosixPollSerial and VTIMESerial are 'not used'.
+        #Also in python 2 on some versions of the Raspberry Pi OS this fails to import
+        #with an ImportError. So it has been removed to try to avoid this issue.
+        from serial.serialposix import Serial ##, PosixPollSerial, VTIMESerial  # noqa
+
     elif os.name == 'java':
         from serial.serialjava import Serial
     else:
